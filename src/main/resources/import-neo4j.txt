@@ -1,0 +1,43 @@
+
+# Init code - Copy the following code to init the database
+
+CREATE (lennon:AccountNode {email:"lennon@gmail.com",firstName:"lennon",lastName:"you"})
+
+CREATE (john:AccountNode {email:"john@gmail.com",firstName:"john",lastName:"yong"})
+
+CREATE (mark:AccountNode {email:"mark@gmail.com",firstName:"mark",lastName:"tan"})
+
+CREATE (sam:AccountNode {email:"sam@gmail.com",firstName:"sam",lastName:"chen"})
+
+CREATE (steve:AccountNode {email:"steve@gmail.com",firstName:"steve",lastName:"lee"})
+
+CREATE (jeff:AccountNode {email:"jeff@gmail.com",firstName:"jeff",lastName:"lim"})
+
+CREATE (abc:ServiceNode {name:"ABC Service"})
+
+CREATE (bcd:ServiceNode {name:"BCD Service"})
+
+CREATE (cde:ServiceNode {name:"CDE Service"})
+
+CREATE (def:ServiceNode {name:"DEF Service"})
+
+CREATE (efg:ServiceNode {name:"EFG Service"})
+
+CREATE (daycare:ServiceGroupNode {name:"Daycare/Childcare"})
+CREATE (dental:ServiceGroupNode {name:"Dental Clinic"})
+CREATE (swimming:ServiceGroupNode {name:"Swimming Lesson/Coaches"})
+CREATE (chinese:ServiceGroupNode {name:"Chinese Tuition"})
+
+CREATE (abc)-[:BELONGED]->(daycare), (bcd)-[:BELONGED]->(daycare), (cde)-[:BELONGED]->(daycare), (def)-[:BELONGED]->(daycare),(efg)-[:BELONGED]->(dental)
+
+CREATE (lennon)-[:REVIEWED {rating:3,content:"1. It is good!"}]->(abc),(john)-[:REVIEWED {rating:4,content:"2. It is good!"}]->(bcd),(sam)-[:REVIEWED {rating:5,content:"3. It is good!"}]->(cde),(steve)-[:REVIEWED {rating:3,content:"4. It is good!"}]->(cde),(lennon)-[:REVIEWED {rating:5,content:"5. It is good!"}]->(bcd)
+
+CREATE (lennon)-[:FRIENDED {since: timestamp()}]->(jeff),(lennon)-[:FRIENDED {since: timestamp()}]->(john),(john)-[:FRIENDED{since:timestamp()}]->(sam),(john)-[:FRIENDED{since:timestamp()}]->(steve),(john)-[:FRIENDED{since:timestamp()}]->(jeff),(mark)-[:FRIENDED {since:timestamp()}]->(sam),(mark)-[:FRIENDED {since:timestamp()}]->(jeff)
+
+
+# Get friend of friend
+
+match (lennon:AccountNode{email:"lennon@gmail.com"})-[:FRIENDED*2]-(m) where not (lennon)-[:FRIENDED]-(m) return distinct m
+
+
+
